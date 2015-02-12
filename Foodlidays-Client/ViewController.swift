@@ -113,8 +113,6 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
                     let adresse:(AnyObject!) = room.objectForKey("street_address")
                     println("Adresse : \(adresse)")
                     
-                    println("test commit")
-                    
                     if(self.emailReceipt == nil)
                         
                     {
