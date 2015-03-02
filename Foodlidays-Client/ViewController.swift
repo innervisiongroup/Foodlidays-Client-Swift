@@ -11,12 +11,21 @@ import AVFoundation
 
 class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
     
+    // Variables globales
+    struct constants {
+        static var emailClient : String!
+        static var roomNumberClient : String!
+    }
+    
     
     @IBOutlet weak var roomTextField: UITextField!
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var qrCodeButton: UIButton!
+    @IBOutlet weak var messageLabel: UILabel!
+    
     var jsonError: NSError?
     var emailReceipt : String!
+    var roomNumberReceipt : String!
     
     var captureSession:AVCaptureSession?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
@@ -44,7 +53,9 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
             
             if(self.isValidEmail(self.emailReceipt) == true)
             {
-                println("Valid email -> \(self.emailReceipt)")
+                self.dismissViewControllerAnimated(true, completion: nil)
+                constants.emailClient = self.emailReceipt
+                self.moveToProducts()
             }
                 
             else
@@ -66,8 +77,6 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
         
         
         presentViewController(alertController, animated: true, completion: nil)
-        
-        
     }
     
     
@@ -81,15 +90,15 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
     }
     
     
+    
     @IBAction func signInTapped(sender: AnyObject) {
-        if roomTextField.text.isEmpty == false
+        
+        if(roomTextField.text.isEmpty == false)
         {
             
-            
-            let request = NSMutableURLRequest(URL: NSURL(string: "http://192.168.1.53:8000/api/v1/login")!)
+            let request = NSMutableURLRequest(URL: NSURL(string: "http:foodlidays.dev.innervisiongroup.com/api/v1/login")!)
             request.HTTPMethod = "POST"
-            
-            let postString = "room_number=\(roomTextField.text)"
+            let postString = "email=\(emailReceipt)&room_number=\(roomTextField.text)"
             
             request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
             let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
@@ -101,38 +110,23 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
                 }
                 
                 if let responseArray:NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &self.jsonError) as? NSDictionary
-                    
                 {
-                    
-                    
+
                     let room: (AnyObject!) = responseArray.objectForKey("room")
+                    println("Room : \(room)")
+
+                    let zipCode: (AnyObject!) = room.objectForKey("zip")
+                    println("Zip code : \(zipCode)")
                     
-                    let note:(AnyObject!) = room.objectForKey("note")
-                    println("Note :  \(note)")
-                    
-                    let adresse:(AnyObject!) = room.objectForKey("street_address")
-                    println("Adresse : \(adresse)")
-                    
-                    if(self.emailReceipt == nil)
-                        
-                    {
-                        dispatch_async(dispatch_get_main_queue())
-                            {
-                                self.registerEmail()
-                        }
-                    }
-                        
-                    else
-                    {
-                        dispatch_async(dispatch_get_main_queue())
-                            {
-                                self.showAlert("Your email is registered as \(self.emailReceipt)")
-                        }
-                    }
+                    constants.roomNumberClient = self.roomTextField.text.uppercaseString
+            
+                            if(constants.emailClient == nil) {
+                                    dispatch_async(dispatch_get_main_queue()){
+                                        self.registerEmail()
+                                }
+                            }
                     
                 }
-                    
-                    
                 else
                 {
                     dispatch_async(dispatch_get_main_queue()) {
@@ -140,18 +134,25 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
                         println("erreur de chambre")
                     }
                 }
-                
             }
             task.resume()
-            
         }
-            
-        else
-        {
+        else  {
             showAlert("Please enter a valid room number")
+        }
+    
+    
+    
+    }
+    
+    func moveToProducts()
+    {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.performSegueWithIdentifier("goto_products", sender: nil)
         }
     }
     
+
     @IBAction func qrCodeTapped(sender: AnyObject) {
         
         let captureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
@@ -166,28 +167,24 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
         captureSession = AVCaptureSession()
         captureSession?.addInput(input as AVCaptureInput)
         
-        let captureMetadataOutput = AVCaptureMetadataOutput()
-        captureSession?.addOutput(captureMetadataOutput)
+            let captureMetadataOutput = AVCaptureMetadataOutput()
+            captureSession?.addOutput(captureMetadataOutput)
         
-        captureMetadataOutput.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
-        captureMetadataOutput.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
+                captureMetadataOutput.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
+                captureMetadataOutput.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
         
-        videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        videoPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
-        videoPreviewLayer?.frame = view.layer.bounds
-        view.layer.addSublayer(videoPreviewLayer)
+            videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+            videoPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+            videoPreviewLayer?.frame = view.layer.bounds
+            view.layer.addSublayer(videoPreviewLayer)
         
-        captureSession?.startRunning()
+          captureSession?.startRunning()
         
         qrCodeFrameView = UIView()
         qrCodeFrameView?.layer.borderColor = UIColor.greenColor().CGColor
         qrCodeFrameView?.layer.borderWidth = 2
         view.addSubview(qrCodeFrameView!)
         view.bringSubviewToFront(qrCodeFrameView!)
-        
-        registerEmail()
-        
-        println("email -> \(emailReceipt)")
         
     }
     
@@ -196,28 +193,42 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
         
         if metadataObjects == nil || metadataObjects.count == 0 {
             qrCodeFrameView?.frame = CGRectZero
+            messageLabel.hidden = false
+            messageLabel.text = "No QR code is detected"
             return
         }
         
+
         let metadataObj = metadataObjects[0] as AVMetadataMachineReadableCodeObject
-        
-        if metadataObj.type == AVMetadataObjectTypeQRCode {
-            
+
+        if supportedBarCodes.filter({ $0 == metadataObj.type }).count > 0 {
+
             let barCodeObject = videoPreviewLayer?.transformedMetadataObjectForMetadataObject(metadataObj as AVMetadataMachineReadableCodeObject) as AVMetadataMachineReadableCodeObject
-            qrCodeFrameView?.frame = barCodeObject.bounds;
+            qrCodeFrameView?.frame = barCodeObject.bounds
             
+            if metadataObj.stringValue != nil {
+                messageLabel.text = metadataObj.stringValue
+                var roomNumberReceipt = messageLabel.text
+                constants.roomNumberClient = roomNumberReceipt
+                if(constants.roomNumberClient != nil)
+                {
+                    registerEmail()
+                    constants.emailClient = emailReceipt
+                }
+                
+                if(constants.emailClient != nil && constants.roomNumberClient != nil)
+                {
+                   moveToProducts()
+                }
+            }
         }
-        
-        let barCodeObject = videoPreviewLayer?.transformedMetadataObjectForMetadataObject(metadataObj as AVMetadataMachineReadableCodeObject) as AVMetadataMachineReadableCodeObject
-        
-        qrCodeFrameView?.frame = barCodeObject.bounds
     }
-    
     
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        messageLabel.hidden = true
         
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "bgFoodlidays")!)
         roomTextField.attributedPlaceholder = NSAttributedString(string:"Room number",
@@ -229,16 +240,5 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
-    }
-    */
     
 }
