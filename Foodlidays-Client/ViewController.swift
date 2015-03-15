@@ -15,6 +15,7 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
     struct constants {
         static var emailClient : String!
         static var roomNumberClient : String!
+        static var zipCodeClient: AnyObject!
     }
     
     
@@ -113,10 +114,8 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
                 {
 
                     let room: (AnyObject!) = responseArray.objectForKey("room")
-                    println("Room : \(room)")
 
-                    let zipCode: (AnyObject!) = room.objectForKey("zip")
-                    println("Zip code : \(zipCode)")
+                    constants.zipCodeClient = room.objectForKey("zip")
                     
                     constants.roomNumberClient = self.roomTextField.text.uppercaseString
             
@@ -149,6 +148,13 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
     {
         dispatch_async(dispatch_get_main_queue()) {
             self.performSegueWithIdentifier("goto_products", sender: nil)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if(segue.identifier == "goto_products"){
+        let destinationVC = segue.destinationViewController as ProduitsTableVC
+        destinationVC.zipCodeClient = constants.zipCodeClient
         }
     }
     
