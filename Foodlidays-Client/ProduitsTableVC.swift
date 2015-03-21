@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import SwiftyJSON
 
 class ProductCell : UITableViewCell{
     
@@ -28,14 +29,12 @@ struct Product {
 
 
 class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableViewDelegate{
-
-
     
     var zipCodeClient: AnyObject!
     var jsonError: NSError?
     
     var products: Product!
-    var jsonDictionary: NSArray!
+    var jsonDictionary:JSON!
     
     @IBAction func action(sender: AnyObject) {
         println(self.jsonDictionary)
@@ -45,28 +44,17 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
         self.tableView .reloadData()
     }
     
-    func retrieveProducts(){
-        
-        Alamofire.request(.GET, "http:foodlidays.dev.innervisiongroup.com/api/v1/food/cat/all/1435"
-         ).responseJSON{ (_,_,JSON,error) in
-            self.jsonDictionary = JSON as NSArray
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        dispatch_async(dispatch_get_main_queue()){
-        self.retrieveProducts()
-        }
         tableView.registerNib(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ProductCellOne")
-        refreshTable()
+        println(self.jsonDictionary)
 
     }
     
     override func tableView(
         tableView: UITableView,
         numberOfRowsInSection section: Int) -> Int {
-           return 5
+           return self.jsonDictionary.count
     }
 
     override func tableView(tableView: UITableView,cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell {
@@ -76,15 +64,33 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
             if(self.jsonDictionary != nil)
             {
         
-            var rowData: NSDictionary = self.jsonDictionary[indexPath.row] as NSDictionary
-            var title=rowData["title"] as String
-            var poster=rowData["note"] as String
-            var descrip=rowData["price"] as String
+            var title   = self.jsonDictionary[indexPath.row]["name"].string
+            var poster  = self.jsonDictionary[indexPath.row]["note"].string
+            var descrip = self.jsonDictionary[indexPath.row]["price"].string
+            var img     = self.jsonDictionary[indexPath.row]["image"].string
+                
+                println(descrip)
+                
+                
+                if let avatarString = NSURL(string: "http://foodlidays.dev.innervisiongroup.com/uploads/\(img)") {
+                    dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.value), 0)){
+                        
+                        let imageData = NSData(contentsOfURL: avatarString)
+                        dispatch_async(dispatch_get_main_queue()) {
+                            if imageData != nil {
+                                cell.img.image = UIImage(data: imageData!)
+                                
+                            }
+                              else { cell.img.image = UIImage(data: NSData(contentsOfURL: NSURL(string:"http://puu.sh/gJwYV/fa3d1cb517.png")!)!)
+                            }
+                        }
+                    }
+                }
         
             cell.label.text = title
             cell.note.text = poster
             cell.price.text = descrip
-        
+  
             return cell
         }
         

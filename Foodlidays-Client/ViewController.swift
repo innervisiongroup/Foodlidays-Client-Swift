@@ -8,6 +8,8 @@
 
 import UIKit
 import AVFoundation
+import Alamofire
+import SwiftyJSON
 
 class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
     
@@ -28,6 +30,8 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
     var emailReceipt : String!
     var roomNumberReceipt : String!
     
+    var productJSON: JSON!
+    
     var captureSession:AVCaptureSession?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
     var qrCodeFrameView:UIView?
@@ -41,6 +45,17 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
         let result = range != nil ? true : false
         return result
     }
+    
+    
+    func retrieveProducts(){
+        
+        Alamofire.request(.GET, "http:foodlidays.dev.innervisiongroup.com/api/v1/food/cat/all/1435"
+            ).responseJSON{ (_,_,resultJSON,error) in
+                self.productJSON = JSON(resultJSON!)
+                println(self.productJSON)
+        }
+    }
+    
     
     
     func registerEmail()
@@ -116,6 +131,9 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
                     let room: (AnyObject!) = responseArray.objectForKey("room")
 
                     constants.zipCodeClient = room.objectForKey("zip")
+                    dispatch_async(dispatch_get_main_queue()){
+                    self.retrieveProducts()
+                    }
                     
                     constants.roomNumberClient = self.roomTextField.text.uppercaseString
             
@@ -155,6 +173,7 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
         if(segue.identifier == "goto_products"){
         let destinationVC = segue.destinationViewController as ProduitsTableVC
         destinationVC.zipCodeClient = constants.zipCodeClient
+        destinationVC.jsonDictionary = self.productJSON
         }
     }
     
