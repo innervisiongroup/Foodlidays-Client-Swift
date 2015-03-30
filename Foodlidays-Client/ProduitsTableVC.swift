@@ -16,7 +16,11 @@ class ProductCell : UITableViewCell{
     @IBOutlet weak var price: UILabel!
     @IBOutlet weak var note: UILabel!
     @IBOutlet weak var img: UIImageView!
+    @IBOutlet weak var quantite: UILabel!
     
+    @IBAction func Stepper(sender: UIStepper) {
+        quantite.text = "\(Int(sender.value))"
+    }
 }
 
 struct Product {
@@ -25,7 +29,6 @@ struct Product {
     var note:  String
     var img:   UIImage
 }
-
 
 
 class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableViewDelegate{
@@ -60,46 +63,23 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
     override func tableView(tableView: UITableView,cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell {
         
          var cell = tableView.dequeueReusableCellWithIdentifier("cell") as ProductCell
-        
-            if(self.jsonDictionary != nil)
+
+            cell.label.text   = self.jsonDictionary[indexPath.row]["name"].string
+            cell.note.text   = self.jsonDictionary[indexPath.row]["note"].string
+            cell.price.text = self.jsonDictionary[indexPath.row]["price"].stringValue
+            if (cell.img.image == nil)
             {
-        
-            var title   = self.jsonDictionary[indexPath.row]["name"].string
-            var poster  = self.jsonDictionary[indexPath.row]["note"].string
-            var descrip = self.jsonDictionary[indexPath.row]["price"].string
-            var img     = self.jsonDictionary[indexPath.row]["image"].string
+                var img  = self.jsonDictionary[indexPath.row]["image"].stringValue
+                var imgUrl = "http://foodlidays.dev.innervisiongroup.com/uploads/\(img)"
                 
-                println(descrip)
-                
-                
-                if let avatarString = NSURL(string: "http://foodlidays.dev.innervisiongroup.com/uploads/\(img)") {
-                    dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.value), 0)){
-                        
-                        let imageData = NSData(contentsOfURL: avatarString)
-                        dispatch_async(dispatch_get_main_queue()) {
-                            if imageData != nil {
-                                cell.img.image = UIImage(data: imageData!)
-                                
-                            }
-                              else { cell.img.image = UIImage(data: NSData(contentsOfURL: NSURL(string:"http://puu.sh/gJwYV/fa3d1cb517.png")!)!)
-                            }
-                        }
-                    }
-                }
-        
-            cell.label.text = title
-            cell.note.text = poster
-            cell.price.text = descrip
-  
-            return cell
-        }
-        
-            else {println("not loaded")}
-        
+                ImageLoader.sharedLoader.imageForUrl(imgUrl,
+                    completionHandler:{(image: UIImage?, url: String) in
+                    cell.img.image = image
+              })
+            }
         return cell
-        
     }
-    
+
     func refreshTable()
     {
         dispatch_async(dispatch_get_main_queue(),{

@@ -52,7 +52,6 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
         Alamofire.request(.GET, "http:foodlidays.dev.innervisiongroup.com/api/v1/food/cat/all/1435"
             ).responseJSON{ (_,_,resultJSON,error) in
                 self.productJSON = JSON(resultJSON!)
-                println(self.productJSON)
         }
     }
     
