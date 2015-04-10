@@ -39,6 +39,7 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
     var products: Product!
     var jsonDictionary:JSON!
     
+    
     @IBAction func action(sender: AnyObject) {
         println(self.jsonDictionary)
     }
@@ -51,6 +52,14 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ProductCellOne")
         println(self.jsonDictionary)
+        var nav = self.navigationController?.navigationBar
+        nav?.barStyle = UIBarStyle.Black
+        nav?.tintColor = UIColor.yellowColor()
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        imageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "profile")
+        imageView.image = image
+        navigationItem.titleView = imageView
 
     }
     
