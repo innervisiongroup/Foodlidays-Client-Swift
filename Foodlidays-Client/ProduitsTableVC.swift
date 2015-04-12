@@ -36,12 +36,22 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
     var zipCodeClient: AnyObject!
     var jsonError: NSError?
     
+    var roomNumber: String!
+    var emailClient: String!
+    
     var products: Product!
     var jsonDictionary:JSON!
     
     var category: Int! = 2 // Par défaut
     
     var cpt: Int! = 0
+    
+    @IBAction func profile(sender: AnyObject) {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.performSegueWithIdentifier("goto_profile", sender: nil)
+        }
+    }
+    
     
     @IBOutlet weak var categoryPicker: UIPickerView!
      let pickerData = ["Beverages","Burgers & Sandwiches","Deserts","Sushis"," Salads","Pizza", "Vegetarian","Pasta","Asian","Breakfast","Libanais", "Apetizer"]
@@ -83,7 +93,6 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
         tableView: UITableView,
         numberOfRowsInSection section: Int) -> Int
     {
-        println("---\(cpt)")
         return cpt
     }
 
@@ -136,6 +145,15 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
         self.cpt = 0
         countCat(self.category)
         refreshTable()
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if(segue.identifier == "goto_profile"){
+            let destinationVC = segue.destinationViewController as ProfileVC
+            destinationVC.roomNumber = roomNumber
+            destinationVC.emailClient = emailClient
+        }
+        
     }
 
 }

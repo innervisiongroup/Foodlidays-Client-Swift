@@ -173,6 +173,8 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
         let destinationVC = segue.destinationViewController as ProduitsTableVC
         destinationVC.zipCodeClient = constants.zipCodeClient
         destinationVC.jsonDictionary = self.productJSON
+        destinationVC.emailClient = constants.emailClient
+        destinationVC.roomNumber = constants.roomNumberClient
         }
     }
     
