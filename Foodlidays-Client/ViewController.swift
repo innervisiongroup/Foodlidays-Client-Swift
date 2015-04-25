@@ -30,6 +30,8 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
     var emailReceipt : String!
     var roomNumberReceipt : String!
     
+    var cptError:Int = 0
+    
     var productJSON: JSON!
     
     var captureSession:AVCaptureSession?
@@ -51,7 +53,12 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
         
         Alamofire.request(.GET, "http:foodlidays.dev.innervisiongroup.com/api/v1/food/cat/all/1435"
             ).responseJSON{ (_,_,resultJSON,error) in
+              if error == nil {
                 self.productJSON = JSON(resultJSON!)
+                } else {
+                    println("Error")
+                    self.cptError = 1
+            }
         }
     }
     
@@ -70,7 +77,10 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
             {
                 self.dismissViewControllerAnimated(true, completion: nil)
                 constants.emailClient = self.emailReceipt
-                self.moveToProducts()
+                
+                
+                if(self.cptError == 0) { self.moveToProducts() }
+                else { self.showAlert("No restaurants available in your area") }
             }
                 
             else
@@ -126,22 +136,23 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
                 
                 if let responseArray:NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &self.jsonError) as? NSDictionary
                 {
-
-                    let room: (AnyObject!) = responseArray.objectForKey("room")
-
-                    constants.zipCodeClient = room.objectForKey("zip")
-                    dispatch_async(dispatch_get_main_queue()){
-                    self.retrieveProducts()
-                    }
+                    println(self.cptError)
                     
-                    constants.roomNumberClient = self.roomTextField.text.uppercaseString
+
+                        let room: (AnyObject!) = responseArray.objectForKey("room")
+
+                        constants.zipCodeClient = room.objectForKey("zip")
+                        dispatch_async(dispatch_get_main_queue()){
+                            self.retrieveProducts()
+                        }
+                    
+                        constants.roomNumberClient = self.roomTextField.text.uppercaseString
             
-                            if(constants.emailClient == nil) {
-                                    dispatch_async(dispatch_get_main_queue()){
-                                        self.registerEmail()
+                                if(constants.emailClient == nil) {
+                                        dispatch_async(dispatch_get_main_queue()){
+                                            self.registerEmail()
+                                    }
                                 }
-                            }
-                    
                 }
                 else
                 {
@@ -170,7 +181,7 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if(segue.identifier == "goto_products"){
-        let destinationVC = segue.destinationViewController as ProduitsTableVC
+        let destinationVC = segue.destinationViewController as! ProduitsTableVC
         destinationVC.zipCodeClient = constants.zipCodeClient
         destinationVC.jsonDictionary = self.productJSON
         destinationVC.emailClient = constants.emailClient
@@ -191,7 +202,7 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
         }
         
         captureSession = AVCaptureSession()
-        captureSession?.addInput(input as AVCaptureInput)
+        captureSession?.addInput(input as! AVCaptureInput)
         
             let captureMetadataOutput = AVCaptureMetadataOutput()
             captureSession?.addOutput(captureMetadataOutput)
@@ -225,11 +236,11 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
         }
         
 
-        let metadataObj = metadataObjects[0] as AVMetadataMachineReadableCodeObject
+        let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
 
         if supportedBarCodes.filter({ $0 == metadataObj.type }).count > 0 {
 
-            let barCodeObject = videoPreviewLayer?.transformedMetadataObjectForMetadataObject(metadataObj as AVMetadataMachineReadableCodeObject) as AVMetadataMachineReadableCodeObject
+            let barCodeObject = videoPreviewLayer?.transformedMetadataObjectForMetadataObject(metadataObj as AVMetadataMachineReadableCodeObject)as! AVMetadataMachineReadableCodeObject
             qrCodeFrameView?.frame = barCodeObject.bounds
             
             if metadataObj.stringValue != nil {

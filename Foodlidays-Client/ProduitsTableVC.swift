@@ -77,7 +77,6 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         countCat(self.category)
         tableView.registerNib(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ProductCellOne")
-        println(self.jsonDictionary)
         var nav = self.navigationController?.navigationBar
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         imageView.contentMode = .ScaleAspectFit
@@ -97,35 +96,33 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
     }
 
     override func tableView(tableView: UITableView,cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell {
+    
+        var nbrCells:Int = 0
         
-         var cell = tableView.dequeueReusableCellWithIdentifier("cell") as ProductCell
-
-        if(self.jsonDictionary[indexPath.row]["category_id"].intValue == self.category)
-        {
-            cell.label.text   = self.jsonDictionary[indexPath.row]["name"].string
-            cell.note.text   = self.jsonDictionary[indexPath.row]["note"].string
-            cell.price.text = self.jsonDictionary[indexPath.row]["price"].stringValue
-            var img  = self.jsonDictionary[indexPath.row]["image"].stringValue
-            var imgUrl = "http://foodlidays.dev.innervisiongroup.com/uploads/\(img)"
+        var cell = tableView.dequeueReusableCellWithIdentifier("cell") as! ProductCell
+        var productCpt = 0
+        
+            while(self.jsonDictionary[cpt]["category_id"].intValue != self.category && productCpt != self.cpt && self.jsonDictionary[cpt]["name"].stringValue != cell.label.text)
+            {
+                productCpt++
+            }
+        
+                cell.label.text   = self.jsonDictionary[productCpt]["name"].string
+                cell.note.text   = self.jsonDictionary[productCpt]["note"].string
+                cell.price.text = self.jsonDictionary[productCpt]["price"].stringValue
+                var img  = self.jsonDictionary[productCpt]["image"].stringValue
+                var imgUrl = "http://foodlidays.dev.innervisiongroup.com/uploads/\(img)"
             
                 
-                ImageLoader.sharedLoader.imageForUrl(imgUrl,
-                    completionHandler:{(image: UIImage?, url: String) in
-                    cell.img.image = image
-              })
-            
-        }
-
-        return cell
+                    ImageLoader.sharedLoader.imageForUrl(imgUrl,
+                        completionHandler:{(image: UIImage?, url: String) in
+                            cell.img.image = image
+                    })
+        
+            return cell
     }
 
-    func refreshTable()
-    {
-        dispatch_async(dispatch_get_main_queue(),{
-            self.tableView.reloadData()
-            return
-        })
-    }
+
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
@@ -141,15 +138,14 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.category = find(pickerData,pickerData[row])! + 2
-        println(self.category)
+        tableView.reloadData()
         self.cpt = 0
         countCat(self.category)
-        refreshTable()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if(segue.identifier == "goto_profile"){
-            let destinationVC = segue.destinationViewController as ProfileVC
+            let destinationVC = segue.destinationViewController as! ProfileVC
             destinationVC.roomNumber = roomNumber
             destinationVC.emailClient = emailClient
         }

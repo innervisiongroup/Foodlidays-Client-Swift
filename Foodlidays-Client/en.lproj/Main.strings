@@ -1,0 +1,66 @@
+
+/* Class = "UIViewController"; title = "profile"; ObjectID = "17U-0b-hbr"; */
+"17U-0b-hbr.title" = "profile";
+
+/* Class = "UILabel"; text = "Numéro"; ObjectID = "6sN-if-cSO"; */
+"6sN-if-cSO.text" = "Numéro";
+
+/* Class = "UILabel"; text = "Zip"; ObjectID = "7uq-am-SKo"; */
+"7uq-am-SKo.text" = "Zip";
+
+/* Class = "UITextField"; placeholder = "Room number"; ObjectID = "Bz4-Wf-EdB"; */
+"Bz4-Wf-EdB.placeholder" = "Room number";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "DZ8-EF-Pqo"; */
+"DZ8-EF-Pqo.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "LBF-oT-e2m"; */
+"LBF-oT-e2m.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Email"; ObjectID = "Oy3-3D-SFh"; */
+"Oy3-3D-SFh.text" = "Email";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "PNQ-Ql-d9m"; */
+"PNQ-Ql-d9m.text" = "0";
+
+/* Class = "UIButton"; normalTitle = "Sign in"; ObjectID = "QIH-zd-mmY"; */
+"QIH-zd-mmY.normalTitle" = "Sign in";
+
+/* Class = "UINavigationItem"; title = "Title"; ObjectID = "QdQ-hP-rW9"; */
+"QdQ-hP-rW9.title" = "Title";
+
+/* Class = "UISegmentedControl"; REQ-l4-dJo.segmentTitles[0] = "+"; ObjectID = "REQ-l4-dJo"; */
+"REQ-l4-dJo.segmentTitles[0]" = "+";
+
+/* Class = "UISegmentedControl"; REQ-l4-dJo.segmentTitles[1] = "-"; ObjectID = "REQ-l4-dJo"; */
+"REQ-l4-dJo.segmentTitles[1]" = "-";
+
+/* Class = "UILabel"; text = "OR"; ObjectID = "Tfi-8C-VYI"; */
+"Tfi-8C-VYI.text" = "OR";
+
+/* Class = "UILabel"; text = "Adresse"; ObjectID = "UM1-hI-0Fm"; */
+"UM1-hI-0Fm.text" = "Adresse";
+
+/* Class = "UILabel"; text = "Description"; ObjectID = "VcK-ZF-ERN"; */
+"VcK-ZF-ERN.text" = "Description";
+
+/* Class = "UILabel"; text = "Description"; ObjectID = "Wib-cK-JCr"; */
+"Wib-cK-JCr.text" = "Description";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "eYj-4H-WSk"; */
+"eYj-4H-WSk.title" = "Item";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "g96-yj-kQ0"; */
+"g96-yj-kQ0.title" = "Item";
+
+/* Class = "UINavigationItem"; title = "Informations"; ObjectID = "hd5-et-Jwx"; */
+"hd5-et-Jwx.title" = "Informations";
+
+/* Class = "UILabel"; text = "Note"; ObjectID = "jsI-kB-pZX"; */
+"jsI-kB-pZX.text" = "Note";
+
+/* Class = "UILabel"; text = "Titre"; ObjectID = "k94-yA-2D0"; */
+"k94-yA-2D0.text" = "Titre";
+
+/* Class = "UILabel"; text = "Prix"; ObjectID = "s5e-AM-cWq"; */
+"s5e-AM-cWq.text" = "Prix";
