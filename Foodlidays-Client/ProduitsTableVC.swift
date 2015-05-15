@@ -17,6 +17,7 @@ class ProductCell : UITableViewCell{
     @IBOutlet weak var note: UILabel!
     @IBOutlet weak var img: UIImageView!
     @IBOutlet weak var quantite: UILabel!
+    var cellCategory: Int!
     
     @IBAction func Stepper(sender: UIStepper) {
         quantite.text = "\(Int(sender.value))"
@@ -44,12 +45,23 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
     
     var category: Int! = 2 // Par défaut
     
+    var objects = [[String: String]]()
+    
     var cpt: Int! = 0
     
     @IBAction func profile(sender: AnyObject) {
         dispatch_async(dispatch_get_main_queue()) {
             self.performSegueWithIdentifier("goto_profile", sender: nil)
         }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if(segue.identifier == "goto_profile"){
+            let destinationVC = segue.destinationViewController as! ProfileVC
+            destinationVC.roomNumber = roomNumber
+            destinationVC.emailClient = emailClient
+        }
+        
     }
     
     
@@ -92,25 +104,26 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
         tableView: UITableView,
         numberOfRowsInSection section: Int) -> Int
     {
-        return cpt
+        return self.cpt
     }
 
     override func tableView(tableView: UITableView,cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell {
-    
-        var nbrCells:Int = 0
         
-        var cell = tableView.dequeueReusableCellWithIdentifier("cell") as! ProductCell
-        var productCpt = 0
+        var cell = tableView.dequeueReusableCellWithIdentifier("cell") as! ProductCell!
+        var chooser = 0
         
-            while(self.jsonDictionary[cpt]["category_id"].intValue != self.category && productCpt != self.cpt && self.jsonDictionary[cpt]["name"].stringValue != cell.label.text)
-            {
-                productCpt++
+        while(self.jsonDictionary[chooser]["category_id"].intValue != self.category)
+        {
+            if(cell.note.text == self.jsonDictionary[chooser]["note"].string) {
+                chooser = chooser + 1
             }
+        }
         
-                cell.label.text   = self.jsonDictionary[productCpt]["name"].string
-                cell.note.text   = self.jsonDictionary[productCpt]["note"].string
-                cell.price.text = self.jsonDictionary[productCpt]["price"].stringValue
-                var img  = self.jsonDictionary[productCpt]["image"].stringValue
+                cell.label.text   = self.jsonDictionary[chooser]["name"].string
+                cell.note.text   = self.jsonDictionary[chooser]["note"].string
+                cell.price.text = self.jsonDictionary[chooser]["price"].stringValue
+                cell.cellCategory = self.jsonDictionary[chooser]["category_id"].intValue
+                var img  = self.jsonDictionary[chooser]["image"].stringValue
                 var imgUrl = "http://foodlidays.dev.innervisiongroup.com/uploads/\(img)"
             
                 
@@ -119,7 +132,7 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
                             cell.img.image = image
                     })
         
-            return cell
+        return cell
     }
 
 
@@ -136,20 +149,12 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
         return pickerData[row]
     }
     
+    
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.category = find(pickerData,pickerData[row])! + 2
-        tableView.reloadData()
         self.cpt = 0
         countCat(self.category)
+        tableView.reloadData()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if(segue.identifier == "goto_profile"){
-            let destinationVC = segue.destinationViewController as! ProfileVC
-            destinationVC.roomNumber = roomNumber
-            destinationVC.emailClient = emailClient
-        }
-        
-    }
-
 }
