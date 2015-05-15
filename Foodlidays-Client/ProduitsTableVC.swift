@@ -49,6 +49,8 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
     
     var cpt: Int! = 0
     
+    var chooser: Int! = 0
+    
     @IBAction func profile(sender: AnyObject) {
         dispatch_async(dispatch_get_main_queue()) {
             self.performSegueWithIdentifier("goto_profile", sender: nil)
@@ -110,13 +112,10 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
     override func tableView(tableView: UITableView,cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell {
         
         var cell = tableView.dequeueReusableCellWithIdentifier("cell") as! ProductCell!
-        var chooser = 0
         
         while(self.jsonDictionary[chooser]["category_id"].intValue != self.category)
         {
-            if(cell.note.text == self.jsonDictionary[chooser]["note"].string) {
-                chooser = chooser + 1
-            }
+            self.chooser = self.chooser + 1
         }
         
                 cell.label.text   = self.jsonDictionary[chooser]["name"].string
@@ -131,6 +130,8 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
                         completionHandler:{(image: UIImage?, url: String) in
                             cell.img.image = image
                     })
+        
+        self.chooser = self.chooser + 1;
         
         return cell
     }
@@ -153,6 +154,7 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.category = find(pickerData,pickerData[row])! + 2
         self.cpt = 0
+        self.chooser = 0
         countCat(self.category)
         tableView.reloadData()
     }
