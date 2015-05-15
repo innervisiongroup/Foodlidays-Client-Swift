@@ -12,6 +12,8 @@ import SwiftyJSON
 
 class ProductCell : UITableViewCell{
     
+    var products: JSON!
+    
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var price: UILabel!
     @IBOutlet weak var note: UILabel!
@@ -19,9 +21,26 @@ class ProductCell : UITableViewCell{
     @IBOutlet weak var quantite: UILabel!
     var cellCategory: Int!
     
+    var checker:Int = 0
+    
     @IBAction func Stepper(sender: UIStepper) {
-        quantite.text = "\(Int(sender.value))"
+        
+        for(var counter = 0;counter < Basket.product.count; ++counter)
+        {
+            if(Basket.product[counter].name == label.text!)
+            {
+                ++checker
+                Basket.product[counter].quantite = String("\(sender.value)")
+            }
+        }
+        
+        if(checker == 0) {
+            Basket.product += [(name: label.text!,price: price.text!,note: note.text!,quantite: "1")]
+        }
+        
+        println(Basket.product)
     }
+    
 }
 
 struct Product {
@@ -31,6 +50,9 @@ struct Product {
     var img:   UIImage
 }
 
+struct Basket {
+    static var product = Array<(name: String, price: String, note: String, quantite: String)>()
+}
 
 class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate {
     
@@ -45,34 +67,13 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
     
     var category: Int! = 2 // Par défaut
     
-    var objects = [[String: String]]()
-    
     var cpt: Int! = 0
     
     var chooser: Int! = 0
     
-    @IBAction func profile(sender: AnyObject) {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.performSegueWithIdentifier("goto_profile", sender: nil)
-        }
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if(segue.identifier == "goto_profile"){
-            let destinationVC = segue.destinationViewController as! ProfileVC
-            destinationVC.roomNumber = roomNumber
-            destinationVC.emailClient = emailClient
-        }
-        
-    }
-    
     
     @IBOutlet weak var categoryPicker: UIPickerView!
      let pickerData = ["Beverages","Burgers & Sandwiches","Deserts","Sushis"," Salads","Pizza", "Vegetarian","Pasta","Asian","Breakfast","Libanais", "Apetizer"]
-    
-    @IBAction func action(sender: AnyObject) {
-        println(self.jsonDictionary)
-    }
     
     override func viewWillAppear(animated: Bool) {
         self.tableView .reloadData()
@@ -157,6 +158,24 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
         self.chooser = 0
         countCat(self.category)
         tableView.reloadData()
+    }
+    
+    
+    /***    PAGE PROFIL ***/
+    
+    @IBAction func profile(sender: AnyObject) {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.performSegueWithIdentifier("goto_profile", sender: nil)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if(segue.identifier == "goto_profile"){
+            let destinationVC = segue.destinationViewController as! ProfileVC
+            destinationVC.roomNumber = roomNumber
+            destinationVC.emailClient = emailClient
+        }
+        
     }
     
 }

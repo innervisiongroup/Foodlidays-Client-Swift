@@ -235,7 +235,7 @@
                                                 <segment title="-"/>
                                             </segments>
                                         </segmentedControl>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PNQ-Ql-d9m">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PNQ-Ql-d9m">
                                             <rect key="frame" x="289" y="28" width="40" height="34"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -256,6 +256,7 @@
                                     <variation key="default">
                                         <mask key="subviews">
                                             <exclude reference="REQ-l4-dJo"/>
+                                            <exclude reference="PNQ-Ql-d9m"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>

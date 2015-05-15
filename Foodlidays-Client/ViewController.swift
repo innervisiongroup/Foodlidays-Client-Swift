@@ -182,10 +182,11 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if(segue.identifier == "goto_products"){
         let destinationVC = segue.destinationViewController as! ProduitsTableVC
-        destinationVC.zipCodeClient = constants.zipCodeClient
-        destinationVC.jsonDictionary = self.productJSON
-        destinationVC.emailClient = constants.emailClient
-        destinationVC.roomNumber = constants.roomNumberClient
+            
+            destinationVC.zipCodeClient = constants.zipCodeClient
+            destinationVC.jsonDictionary = self.productJSON
+            destinationVC.emailClient = constants.emailClient
+            destinationVC.roomNumber = constants.roomNumberClient
         }
     }
     
