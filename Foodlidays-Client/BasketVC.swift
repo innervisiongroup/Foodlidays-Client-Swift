@@ -12,30 +12,42 @@ class BasketVC: UIViewController {
     
     var roomNumber:AnyObject!
     var emailClient:AnyObject!
-    var basket = Array<(name: String, price: String, note: String, quantite: String)>()
+    var basket = Array<(id: Int,name: String, price: String, note: String, quantite: Int)>()
+    
+    @IBOutlet weak var productList: UILabel!
+    @IBOutlet weak var total: UILabel!
+    
+    
+    var finalPrice: Double = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         println(roomNumber)
         println(emailClient)
-        println(basket)
+        
+        for product in basket
+        {
+            var prix = product.price as NSString
+            prix = String(stringInterpolationSegment: prix.doubleValue * Double(product.quantite))
+            
+            productList.text = productList.text?.stringByAppendingString("\(product.quantite)x : \(product.name) \t \(prix)€ \n")
+            productList.numberOfLines++
+            
+            self.finalPrice += prix.doubleValue
+            
+        }
+        
+        total.text = ("Total :  \(self.finalPrice)€")
     }
 
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

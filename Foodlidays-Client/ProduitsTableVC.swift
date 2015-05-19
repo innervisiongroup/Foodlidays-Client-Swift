@@ -18,7 +18,8 @@ class ProductCell : UITableViewCell{
     @IBOutlet weak var price: UILabel!
     @IBOutlet weak var note: UILabel!
     @IBOutlet weak var img: UIImageView!
-    @IBOutlet weak var quantite: UILabel!
+    var quantite: Int!
+    var idProduit: Int!
     var cellCategory: Int!
     
     var checker:Int = 0
@@ -30,12 +31,12 @@ class ProductCell : UITableViewCell{
             if(Basket.product[counter].name == label.text!)
             {
                 ++checker
-                Basket.product[counter].quantite = String("\(sender.value)")
+                Basket.product[counter].quantite = Int(sender.value)
             }
         }
         
         if(checker == 0) {
-            Basket.product += [(name: label.text!,price: price.text!,note: note.text!,quantite: "1")]
+            Basket.product += [(id: idProduit!,name: label.text!,price: price.text!,note: note.text!,quantite: 1)]
         }
         
         println(Basket.product)
@@ -51,7 +52,7 @@ struct Product {
 }
 
 struct Basket {
-    static var product = Array<(name: String, price: String, note: String, quantite: String)>()
+    static var product = Array<(id: Int,name: String, price: String, note: String, quantite: Int)>()
 }
 
 class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate {
@@ -123,6 +124,7 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
                 cell.note.text   = self.jsonDictionary[chooser]["note"].string
                 cell.price.text = self.jsonDictionary[chooser]["price"].stringValue
                 cell.cellCategory = self.jsonDictionary[chooser]["category_id"].intValue
+                cell.idProduit = self.jsonDictionary[chooser]["id"].intValue
                 var img  = self.jsonDictionary[chooser]["image"].stringValue
                 var imgUrl = "http://foodlidays.dev.innervisiongroup.com/uploads/\(img)"
             
