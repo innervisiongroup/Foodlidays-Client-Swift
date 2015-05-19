@@ -8,11 +8,20 @@
 
 import UIKit
 
+import SwiftyJSON
+import Alamofire
+
 class BasketVC: UIViewController {
     
     var roomNumber:AnyObject!
     var emailClient:AnyObject!
     var basket = Array<(id: Int,name: String, price: String, note: String, quantite: Int)>()
+    
+    var dataClient : NSDictionary!
+    
+    
+    var productArray = Array<(id: Int,quantity: Int)>()
+
     
     @IBOutlet weak var productList: UILabel!
     @IBOutlet weak var total: UILabel!
@@ -39,8 +48,41 @@ class BasketVC: UIViewController {
         }
         
         total.text = ("Total :  \(self.finalPrice)€")
+        retrieveInfos()
+        for product in basket
+        {
+            self.productArray += [(id: product.id,quantite: product.quantite)]
+        }
+        
+        println(self.productArray)
+        
+        println(dataClient)
     }
-
+    @IBAction func sendOrder(sender: AnyObject) {
+        println(self.dataClient)
+        
+    
+        var order : JSON
+        order["room_number"].int = 4
+        order["plats"] = self.productArray as JSON
+        
+        
+        println(order)
+    }
+    
+    func retrieveInfos()
+    {
+        let parameters = [
+            "email": ["\(emailClient)"],
+            "room_number": ["\(roomNumber)"]
+        ]
+        
+        Alamofire.request(.POST, "http:foodlidays.dev.innervisiongroup.com/api/v1/login", parameters: parameters, encoding: .JSON)
+            .responseJSON {
+                (data) -> Void in
+                self.dataClient = data.2 as! NSDictionary
+        }
+    }
     
     
     override func didReceiveMemoryWarning() {
