@@ -157,6 +157,7 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
         self.cpt = 0
         self.chooser = 0
         countCat(self.category)
+        println(Basket.product)
         tableView.reloadData()
     }
     
@@ -169,12 +170,28 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
         }
     }
     
+    @IBAction func basket(sender: AnyObject) {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.performSegueWithIdentifier("goto_basket", sender: nil)
+        }
+    }
+    
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if(segue.identifier == "goto_profile"){
-            let destinationVC = segue.destinationViewController as! ProfileVC
-            destinationVC.roomNumber = roomNumber
-            destinationVC.emailClient = emailClient
+            let destinationVC = segue.destinationViewController as?
+            ProfileVC
+            destinationVC!.roomNumber = roomNumber
+            destinationVC!.emailClient = emailClient
         }
+        
+        else if(segue.identifier == "goto_basket"){
+            let destinationVC = segue.destinationViewController as? BasketVC
+            destinationVC!.roomNumber = roomNumber
+            destinationVC!.emailClient = emailClient
+            destinationVC!.basket = Basket.product
+        }
+
         
     }
     

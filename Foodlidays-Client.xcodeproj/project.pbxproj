@@ -14,6 +14,7 @@
 		D315100C1A8CCD1A0021A155 /* Foodlidays_ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D315100B1A8CCD1A0021A155 /* Foodlidays_ClientTests.swift */; };
 		D3322FB71AC9BD480001E6C1 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3322FB61AC9BD480001E6C1 /* ImageLoader.swift */; };
 		D340202F1AD7C45200730923 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D340202E1AD7C45200730923 /* Images.xcassets */; };
+		D37511EA1B0B3551003C685A /* BasketVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37511E91B0B3551003C685A /* BasketVC.swift */; };
 		D39563DC1B05E0C100086548 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39563D51B05E0B100086548 /* Alamofire.framework */; };
 		D39563EC1B05E0D900086548 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39563E51B05E0D400086548 /* SwiftyJSON.framework */; };
 		D3ADC0B91ADAB6AA00A1686A /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ADC0B81ADAB6AA00A1686A /* ProfileVC.swift */; };
@@ -111,6 +112,7 @@
 		D315100B1A8CCD1A0021A155 /* Foodlidays_ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodlidays_ClientTests.swift; sourceTree = "<group>"; };
 		D3322FB61AC9BD480001E6C1 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageLoader.swift; path = "../../../../Downloads/SwiftImageLoader-master/ImageLoader.swift"; sourceTree = "<group>"; };
 		D340202E1AD7C45200730923 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D37511E91B0B3551003C685A /* BasketVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasketVC.swift; sourceTree = "<group>"; };
 		D39563CD1B05E0B100086548 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-master/Alamofire.xcodeproj"; sourceTree = "<group>"; };
 		D39563DD1B05E0D400086548 /* SwiftyJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftyJSON.xcodeproj; path = "SwiftyJSON-master/SwiftyJSON.xcodeproj"; sourceTree = "<group>"; };
 		D3A2CDDD1ADD6E8600737A40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 		D3150FF21A8CCD1A0021A155 /* Foodlidays-Client */ = {
 			isa = PBXGroup;
 			children = (
+				D37511E91B0B3551003C685A /* BasketVC.swift */,
 				D3322FB61AC9BD480001E6C1 /* ImageLoader.swift */,
 				D3150FF51A8CCD1A0021A155 /* AppDelegate.swift */,
 				D340202E1AD7C45200730923 /* Images.xcassets */,
@@ -396,6 +399,7 @@
 				D3150FF81A8CCD1A0021A155 /* ViewController.swift in Sources */,
 				D3C7322A1A9C6166003C9083 /* ProduitsTableVC.swift in Sources */,
 				D3322FB71AC9BD480001E6C1 /* ImageLoader.swift in Sources */,
+				D37511EA1B0B3551003C685A /* BasketVC.swift in Sources */,
 				D3150FF61A8CCD1A0021A155 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

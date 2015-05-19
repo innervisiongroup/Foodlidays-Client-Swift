@@ -200,7 +200,12 @@
                                             <segue destination="17U-0b-hbr" kind="show" identifier="goto_profile" id="HEw-0O-pHU"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem key="rightBarButtonItem" title="Item" id="eYj-4H-WSk"/>
+                                    <barButtonItem key="rightBarButtonItem" image="basket" id="eYj-4H-WSk">
+                                        <connections>
+                                            <action selector="basket:" destination="6bT-4c-pe4" id="jKM-SN-sQJ"/>
+                                            <segue destination="yR0-9a-7hn" kind="show" identifier="goto_basket" id="Fsx-9b-ahZ"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </navigationItem>
                             </items>
                         </navigationBar>
@@ -289,6 +294,25 @@
             </objects>
             <point key="canvasLocation" x="995" y="-195"/>
         </scene>
+        <!--basket-->
+        <scene sceneID="UBu-Pw-pak">
+            <objects>
+                <viewController title="basket" id="yR0-9a-7hn" customClass="BasketVC" customModule="Foodlidays_Client" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1Gz-Kf-Gx2"/>
+                        <viewControllerLayoutGuide type="bottom" id="YVo-FH-a0T"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="R6z-Fd-IhJ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UHX-ef-fT8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1429" y="-95"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="43G-q4-JX6">
             <objects>
@@ -310,6 +334,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="basket" width="40" height="34"/>
         <image name="logo" width="165" height="35"/>
         <image name="profile" width="41" height="41"/>
         <image name="qrCode" width="100" height="100"/>
