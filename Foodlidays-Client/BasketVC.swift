@@ -58,6 +58,20 @@ class BasketVC: UIViewController {
         
         println(dataClient)
     }
+    
+    func JSONStringify(value: AnyObject, prettyPrinted: Bool = false) -> String {
+        var options = prettyPrinted ? NSJSONWritingOptions.PrettyPrinted : nil
+        if NSJSONSerialization.isValidJSONObject(value) {
+            if let data = NSJSONSerialization.dataWithJSONObject(value, options: options, error: nil) {
+                if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
+                    return string as String
+                }
+            }
+        }
+        return ""
+    }
+    
+    
     @IBAction func sendOrder(sender: AnyObject) {
         println(self.dataClient)
         
@@ -74,35 +88,51 @@ class BasketVC: UIViewController {
         let room: (AnyObject!) = dataClient.objectForKey("room")
         var zip: AnyObject! = room.objectForKey("zip")
         var floor: AnyObject! = room.objectForKey("floor")
-        var address: AnyObject! = room.objectForKey("address")
-        var id_room: AnyObject! = room.objectForKey("id_room")
-        var type_room: AnyObject! = room.objectForKey("type_room")
+        var address: AnyObject! = room.objectForKey("street_address")
+        var id_room: AnyObject! = room.objectForKey("id")
+        var type_room: AnyObject! = room.objectForKey("place_type")
         var roomNb: AnyObject! = room.objectForKey("room")
         var country: AnyObject! = room.objectForKey("country")
         var city: AnyObject! = room.objectForKey("city")
-        var language: AnyObject! = "fr"
-        var method_payment: AnyObject! = "cash"
         
-        let jsonObject: [String: AnyObject] = [
+        var jsonObject: NSDictionary = [
             "room_number": roomNumber,
             "zip" : zip,
             "email": emailClient,
             "plats": prods,
             "floor" : floor,
             "address": address,
-            "type_room" : type_room,
+            "type_room" : "room",
             "id_room" : id_room,
             "country" : country,
             "room" : roomNb,
-            "id_user" : 1,
+            "id_user" : "1",
             "city" : city,
-            "language" : language,
-            "method_payment": method_payment,
+            "language" : "fr",
+            "method_payement": "card",
         ]
         
-        println(jsonObject)
+        
+        if NSJSONSerialization.isValidJSONObject(jsonObject) {
+            print("jsonObject is valid JSON")
+            
+            let jsonString = JSONStringify(jsonObject)
+            println(jsonString)
+            
+            let jsonStringPretty = JSONStringify(jsonObject, prettyPrinted: true)
+            println(jsonStringPretty)
 
-
+            let parameters = [
+                "order" : jsonStringPretty
+            ]
+            
+            Alamofire.request(.POST, "http:foodlidays.dev.innervisiongroup.com/api/v1/order", parameters: parameters, encoding: .JSON)
+                .responseJSON {
+                    (data) -> Void in
+                    println("----")
+                    println(data)
+            }
+        }
     }
     
     func retrieveInfos()
