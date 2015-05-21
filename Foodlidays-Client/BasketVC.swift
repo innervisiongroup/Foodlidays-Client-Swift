@@ -61,13 +61,48 @@ class BasketVC: UIViewController {
     @IBAction func sendOrder(sender: AnyObject) {
         println(self.dataClient)
         
-    
-        var order : JSON
-        order["room_number"].int = 4
-        order["plats"] = self.productArray as JSON
         
+        var prods = [[String:Int]]()
+        for product in productArray
+        {
+            var eachDict = [String:Int]()
+            eachDict["id"] =  product.id
+            eachDict["quantity"] = product.quantity
+            prods.append(eachDict)
+        }
+
+        let room: (AnyObject!) = dataClient.objectForKey("room")
+        var zip: AnyObject! = room.objectForKey("zip")
+        var floor: AnyObject! = room.objectForKey("floor")
+        var address: AnyObject! = room.objectForKey("address")
+        var id_room: AnyObject! = room.objectForKey("id_room")
+        var type_room: AnyObject! = room.objectForKey("type_room")
+        var roomNb: AnyObject! = room.objectForKey("room")
+        var country: AnyObject! = room.objectForKey("country")
+        var city: AnyObject! = room.objectForKey("city")
+        var language: AnyObject! = "fr"
+        var method_payment: AnyObject! = "cash"
         
-        println(order)
+        let jsonObject: [String: AnyObject] = [
+            "room_number": roomNumber,
+            "zip" : zip,
+            "email": emailClient,
+            "plats": prods,
+            "floor" : floor,
+            "address": address,
+            "type_room" : type_room,
+            "id_room" : id_room,
+            "country" : country,
+            "room" : roomNb,
+            "id_user" : 1,
+            "city" : city,
+            "language" : language,
+            "method_payment": method_payment,
+        ]
+        
+        println(jsonObject)
+
+
     }
     
     func retrieveInfos()
