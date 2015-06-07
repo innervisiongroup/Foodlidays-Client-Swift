@@ -41,6 +41,7 @@ class ProductCell : UITableViewCell{
         
         println(Basket.product)
     }
+
     
 }
 
@@ -93,6 +94,7 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         countCat(self.category)
         tableView.registerNib(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ProductCellOne")
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "bgProducts")!)
         var nav = self.navigationController?.navigationBar
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         imageView.contentMode = .ScaleAspectFit
@@ -114,6 +116,7 @@ class ProduitsTableVC: UITableViewController, UITableViewDataSource, UITableView
     override func tableView(tableView: UITableView,cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell {
         
         var cell = tableView.dequeueReusableCellWithIdentifier("cell") as! ProductCell!
+        cell.backgroundColor = UIColor(white: 1, alpha: 0.7)
         
         while(self.jsonDictionary[chooser]["category_id"].intValue != self.category)
         {

@@ -51,7 +51,7 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
     
     func retrieveProducts(){
         
-        Alamofire.request(.GET, "http:foodlidays.dev.innervisiongroup.com/api/v1/food/cat/all/1435"
+        Alamofire.request(.GET, "http:foodlidays.dev.innervisiongroup.com/api/v1/food/cat/all/\(constants.zipCodeClient)"
             ).responseJSON{ (_,_,resultJSON,error) in
               if error == nil {
                 self.productJSON = JSON(resultJSON!)
@@ -153,6 +153,11 @@ class ViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
                                             self.registerEmail()
                                     }
                                 }
+
+                    
+                
+                    NSUserDefaults.standardUserDefaults().setBool(true, forKey: "hasLoginKey")
+                    NSUserDefaults.standardUserDefaults().synchronize()
                 }
                 else
                 {

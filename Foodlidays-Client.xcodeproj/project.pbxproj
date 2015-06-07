@@ -14,6 +14,7 @@
 		D315100C1A8CCD1A0021A155 /* Foodlidays_ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D315100B1A8CCD1A0021A155 /* Foodlidays_ClientTests.swift */; };
 		D3322FB71AC9BD480001E6C1 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3322FB61AC9BD480001E6C1 /* ImageLoader.swift */; };
 		D340202F1AD7C45200730923 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D340202E1AD7C45200730923 /* Images.xcassets */; };
+		D36DD21D1B19C22C00FFE2F2 /* Main.strings (French) in Resources */ = {isa = PBXBuildFile; fileRef = D36DD21C1B19C22C00FFE2F2 /* Main.strings (French) */; };
 		D37511EA1B0B3551003C685A /* BasketVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37511E91B0B3551003C685A /* BasketVC.swift */; };
 		D39563DC1B05E0C100086548 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39563D51B05E0B100086548 /* Alamofire.framework */; };
 		D39563EC1B05E0D900086548 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39563E51B05E0D400086548 /* SwiftyJSON.framework */; };
@@ -112,6 +113,7 @@
 		D315100B1A8CCD1A0021A155 /* Foodlidays_ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodlidays_ClientTests.swift; sourceTree = "<group>"; };
 		D3322FB61AC9BD480001E6C1 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageLoader.swift; path = "../../../../Downloads/SwiftImageLoader-master/ImageLoader.swift"; sourceTree = "<group>"; };
 		D340202E1AD7C45200730923 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D36DD21C1B19C22C00FFE2F2 /* Main.strings (French) */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "Main.strings (French)"; path = "../Main.strings (French)"; sourceTree = "<group>"; };
 		D37511E91B0B3551003C685A /* BasketVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasketVC.swift; sourceTree = "<group>"; };
 		D39563CD1B05E0B100086548 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-master/Alamofire.xcodeproj"; sourceTree = "<group>"; };
 		D39563DD1B05E0D400086548 /* SwiftyJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftyJSON.xcodeproj; path = "SwiftyJSON-master/SwiftyJSON.xcodeproj"; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				D3C732291A9C6166003C9083 /* ProduitsTableVC.swift */,
 				D3150FF71A8CCD1A0021A155 /* ViewController.swift */,
 				D3150FF91A8CCD1A0021A155 /* Main.storyboard */,
+				D36DD21C1B19C22C00FFE2F2 /* Main.strings (French) */,
 				D3150FFE1A8CCD1A0021A155 /* LaunchScreen.xib */,
 				D3150FF31A8CCD1A0021A155 /* Supporting Files */,
 			);
@@ -376,6 +379,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D340202F1AD7C45200730923 /* Images.xcassets in Resources */,
+				D36DD21D1B19C22C00FFE2F2 /* Main.strings (French) in Resources */,
 				D3150FFB1A8CCD1A0021A155 /* Main.storyboard in Resources */,
 				D31510001A8CCD1A0021A155 /* LaunchScreen.xib in Resources */,
 			);
